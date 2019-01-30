@@ -7,21 +7,29 @@
 			var squares = [];
 			var canvas;
 			var context;			
+			var startInterval;
 
 			function update() {
 				context.clearRect(0, 0, canvas.width, canvas.height);
 				for (i = 0; i < squares.length; i++) {
-					squares[i].update();
+					squares[i].update();			
 				}
 			}
+
+			function start() {
+				squares[0].setSpeed(10, 0);
+				clearInterval(startInterval)		
+			}
+
 
 			function init() {
 				canvas = document.getElementById("canvas");
 				canvas.width = window.innerWidth;
 				canvas.height = window.innerHeight;
 				context = canvas.getContext("2d");
-				squares.push(new Square(context, 10, 10, "rgb(255,0,0)", 0, 0, 10, 0))
+				squares.push(new Square(context, 10, 10, "rgb(255,0,0)", 0, 0, 0, 0))
 				setInterval(update, 100);
+				startInterval = setInterval(start, 2000);
 			}
 		</script>
 	</head>

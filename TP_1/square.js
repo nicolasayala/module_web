@@ -10,10 +10,13 @@ function Square(ctx, width, height, color, x, y, dx, dy) {
 	this.update = function() {
 		this.context.fillStyle = color;
 		this.context.fillRect(this.x, this.y, this.width, this.height)
-
-		this.x += dx;
-		this.y += dy;
+		console.log(dx);
+		this.x += this.dx;
+		this.y += this.dy;
 	}
 
-
+	this.setSpeed = function(dx, dy) {
+		this.dx = dx;
+		this.dy = dy;
+	}
 }
