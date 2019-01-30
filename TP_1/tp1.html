@@ -1,0 +1,29 @@
+<html>
+	<head>
+		<meta charset="utf-8"/>
+
+		<script>
+			var timer;
+			var t = 10;
+			var interval
+
+			function timerUpdate() {
+				t -= 1;
+				timer.innerText = t
+				if (t == 0) {
+					clearInterval(interval)				
+				}
+			}
+
+			function init() {
+				timer = document.getElementById("timer");
+				timer.innerText = t
+				interval = window.setInterval(timerUpdate, 1000);
+			}
+		</script>
+	</head>
+
+	<body id="body" onload="init()">
+		<label id="timer"> 0 </label>
+	</body>	
+</html>
