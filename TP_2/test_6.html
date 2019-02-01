@@ -1,0 +1,38 @@
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<script src="AnimatedSprite.js"></script>
+
+		<script>
+			var canvas;
+			var context;
+			var fps = 30;
+			var coinImage = new Image();
+			var coin;
+
+			function mainloop(timestamp) {
+
+				context.clearRect(0, 0, canvas.width, canvas.height);
+				coin.draw();
+				coin.update();
+
+				setTimeout(function(){ window.requestAnimationFrame(mainloop); }, 1000 / fps);
+			}
+
+			function init() {
+				coinImage.src = "./coin-sprite-animation.png";
+				canvas = document.getElementById("canvas");
+				context = canvas.getContext("2d");
+
+				coin = new AnimatedSprite(context, 1000, 100, coinImage, 10);
+				coinImage.onload = function() {
+					window.requestAnimationFrame(mainloop);
+				};
+			}
+		</script>
+	</head>
+
+	<body id="body" onload="init()">
+		<canvas id="canvas" width="400" height="400"></canvas>
+	</body>
+</html>

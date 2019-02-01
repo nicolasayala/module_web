@@ -1,0 +1,47 @@
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<script src="square.js"></script>
+
+		<script>
+			var squares = [];
+			var canvas;
+			var context;
+			var lastFrameDate;
+
+			function update() {
+				context.clearRect(0, 0, canvas.width, canvas.height);
+				var speedScale = (new Date() - lastFrameDate) / 16;
+				for (i = 0; i < squares.length; i++) {
+					var square = squares[i];
+					square.draw()
+					square.move(square.dx * speedScale, square.dy * speedScale)
+				}
+				lastFrameDate = new Date()
+        pausecomp(75)
+			}
+
+      function pausecomp(millis) {
+        var date = new Date();
+        var curDate = null;
+        do {
+          curDate = new Date();
+        } while(curDate-date < millis);
+      }
+
+			function init() {
+				canvas = document.getElementById("canvas");
+				canvas.width = window.innerWidth;
+				canvas.height = window.innerHeight;
+				context = canvas.getContext("2d");
+				squares.push(new Square(context, 10, 10, "rgb(255,0,0)", 0, 0, 10, 0))
+				lastFrameDate = new Date();
+				setInterval(update, 16);
+			}
+		</script>
+	</head>
+
+	<body id="body" onload="init()">
+		<canvas id="canvas" width="400" height="400"></canvas>
+	</body>
+</html>
