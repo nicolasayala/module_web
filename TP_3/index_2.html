@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<script src="AnimatedSprite.js"></script>
+		<script src="Player.js"></script>
+		<title>Events </title>
+    </head>
+    <body onload="init()">
+			<canvas id="canvas" width="400" height="400"></canvas>
+    </body>
+
+<script>
+var player
+var player_speed = 3
+var fps = 60
+var auto_move = false
+var auto_move_x
+
+function mainloop(timestamp) {
+	context.clearRect(0, 0, canvas.width, canvas.height);
+	if (auto_move) {
+		var dir_x = (player.x < auto_move_x) ? 1 : -1
+		player.setSpeed(dir_x * player_speed, 0)
+		player.update()
+		auto_move = !((dir_x == 1 && player.x >= auto_move_x) || (dir_x == -1 && player.x <= auto_move_x));
+		if (!auto_move) {
+			player.setSpeed(0, 0)
+		}
+	} else {
+		player.update()
+	}
+	player.draw();
+
+	setTimeout(function(){ window.requestAnimationFrame(mainloop); }, 1000 / fps);
+}
+
+function init() {
+	canvas = document.getElementById("canvas");
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
+	context = canvas.getContext("2d");
+	player = new Player(context, 200, 200);
+
+	window.addEventListener("keydown", function (event) {
+		if (event.defaultPrevented) {
+	  	return; // Should do nothing if the key event was already consumed.
+		}
+		switch (event.key) {
+			case "ArrowDown":
+				auto_move = false
+		  	player.setSpeed(0, player_speed);
+	    	break;
+	 	  case "ArrowUp":
+				auto_move = false
+			  player.setSpeed(0, -player_speed);
+	 	    break;
+	 	  case "ArrowLeft":
+				auto_move = false
+			  player.setSpeed(-player_speed, 0);
+	 	    break;
+	 	  case "ArrowRight":
+				auto_move = false
+			  player.setSpeed(player_speed, 0);
+		    break;
+	  }
+	  // Consume the event for suppressing "double action".
+	  event.preventDefault();
+	}, false);
+
+	window.addEventListener("keyup", function (event) {
+		if (event.defaultPrevented) {
+	  	return;
+		}
+		player.setSpeed(0, 0);
+	  event.preventDefault();
+	}, false);
+
+	canvas.addEventListener("mousedown", function (event) {
+		auto_move = true
+		auto_move_x = event.clientX;
+	}, false);
+
+	window.requestAnimationFrame(mainloop);
+}
+</script>
