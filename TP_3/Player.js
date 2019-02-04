@@ -23,7 +23,7 @@ function Player(context, x, y) {
     this.x += this.dx;
     this.y += this.dy;
     this.sprite.x = this.x - 64;
-    this.sprite.y = this.y - 64;
+    this.sprite.y = this.y - 128;
   }
 
   this.setSpeed = function(dx, dy) {

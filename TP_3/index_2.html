@@ -16,16 +16,29 @@ var player_speed = 3
 var fps = 60
 var auto_move = false
 var auto_move_x
+var auto_move_y
 
 function mainloop(timestamp) {
 	context.clearRect(0, 0, canvas.width, canvas.height);
+
+	// Point and click, player moves by itself
 	if (auto_move) {
-		var dir_x = (player.x < auto_move_x) ? 1 : -1
-		player.setSpeed(dir_x * player_speed, 0)
-		player.update()
-		auto_move = !((dir_x == 1 && player.x >= auto_move_x) || (dir_x == -1 && player.x <= auto_move_x));
-		if (!auto_move) {
-			player.setSpeed(0, 0)
+		if (auto_move_x != -1) {
+			var dir_x = (player.x < auto_move_x) ? 1 : -1
+			player.setSpeed(dir_x * player_speed, 0)
+			player.update()
+			if ((dir_x == 1 && player.x >= auto_move_x) || (dir_x == -1 && player.x <= auto_move_x)) {
+				auto_move_x = -1
+			}
+		} else if (auto_move_y != -1) {
+			var dir_y = (player.y < auto_move_y) ? 1 : -1
+			player.setSpeed(0, dir_y * player_speed)
+			player.update()
+			if ((dir_y == 1 && player.y >= auto_move_y) || (dir_y == -1 && player.y <= auto_move_y)) {
+				auto_move_y = -1
+				player.setSpeed(0, 0);
+				auto_move = false
+			}
 		}
 	} else {
 		player.update()
@@ -79,6 +92,7 @@ function init() {
 	canvas.addEventListener("mousedown", function (event) {
 		auto_move = true
 		auto_move_x = event.clientX;
+		auto_move_y = event.clientY;
 	}, false);
 
 	window.requestAnimationFrame(mainloop);
